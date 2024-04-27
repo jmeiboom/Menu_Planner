@@ -1,7 +1,6 @@
 
 """      
             Ingredients
-              v.0.001
               
     A Ingredient should be an object that that will make up Recipes and MenuItems.
     The functions of MenuItem are to state the cost of the Ingredient in relation to it's unit. A Ingredient is also a dictionary

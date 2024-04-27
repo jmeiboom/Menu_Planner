@@ -1,5 +1,5 @@
 from Classes.recipes import Recipe, recipes_dict
-from Classes.ingredients import ingredients_dict
+from Classes.ingredients import Ingredient,ingredients_dict
 
 # def build_recipe(name, ingredients, amounts, units):
 #     """
@@ -38,9 +38,25 @@ def create_recipe_from_user_input():
         ingredient_name = input("Enter the name of an ingredient or type 'done' to finish): ")
         if ingredient_name.lower() == 'done':
             break
+
+        # Check if the ingredient is in the ingredients_dict
+        if ingredient_name not in ingredients_dict:
+            # If not, ask the user if they want to add it
+            add_ingredient = input(f"{ingredient_name} not found in ingredients_dict. Would you like to add it? (y/n): ")
+            if add_ingredient.lower() == 'y':
+                # If they do, prompt them for the necessary data and add it to the ingredients_dict
+                ingredient_unit = input("Enter the unit of measurement for the new ingredient: ")
+                ingredient_unit_cost = input("Enter the cost per unit for the new ingredient (leave empty for 0): ")
+                if not ingredient_unit_cost:  # if the user left the cost empty, use 0
+                    ingredient_unit_cost = 0
+                else:  # otherwise, convert the cost to a float
+                    ingredient_unit_cost = float(ingredient_unit_cost)
+                ingredients_dict[ingredient_name] = {'unit': ingredient_unit, 'unit_cost': ingredient_unit_cost}
+
         ingredient_amount = float(input(f"Enter the amount of {ingredient_name}: "))
         ingredient_unit = input(f"Enter the unit of measurement for {ingredient_name}: ")
-        ingredients[ingredient_name] = {"amount": ingredient_amount, "unit": ingredient_unit}
+        ingredient = Ingredient(name=ingredient_name, amount=ingredient_amount)
+        ingredients[ingredient] = {"amount": ingredient_amount, "unit": ingredient_unit}
 
     # Get user input for sub recipes
     while True:
@@ -57,6 +73,3 @@ def create_recipe_from_user_input():
     recipe = Recipe(name=recipe_name, ingredients=ingredients, sub_recipes=sub_recipes, directions=directions)
 
     return recipe
-
-# Example usage:
-user_recipe = create_recipe_from_user_input()
